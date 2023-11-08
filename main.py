@@ -7,6 +7,7 @@ import os
 
 anonymous_menu = {"1": "Sign In", "2": "Sign Up", "3": "Forgot Password?", "4": "Exit"}
 user_menu = {"1": "Change Recovery Options", "2": "Add/Change Email", "3": "Sign Out", "4": "Exit"}
+admin_menu = {"1": "Add a User", "2": "Delete a User", "3": "Change a User's Password", "4": "Logout", "5": "Exit"}
 d={"uppercase letter": (65, 90), "lowercase letter": (97, 122), "number": (40, 57), "special character": (0, 1114111)}
 user_designations = {"Admin", "Staff", "User"}
 
@@ -49,7 +50,50 @@ def main(logged_in_user:str, chi:str=None):
         print("\n##MENU##")
         if logged_in_user:
             if lis[logged_in_user]["designation"] == "Admin":
-                pass
+                x=""
+                for i in admin_menu:
+                    x+=(f"[{i}] {admin_menu[i]}\n")
+                print(x[:-1])
+                if not chi:
+                    ch = input("Enter your choice:")
+                else:
+                    ch = chi
+                if ch in admin_menu:
+                    if ch == "1":
+                        username=input("Enter username: ")
+                        if username in lis:
+                            print("User already Exists!")
+                        else:
+                            password = get_password()
+                            key = Fernet.generate_key()
+                            f = Fernet(key)
+                            token = f.encrypt(bytes(password, encoding='utf-8'))
+                            lis[username] = {"key": key, "token": token, "email": "", "designation": "User", "recovery": dict(question="", answer="")}
+                            print("User added successfully!")
+                    elif ch == "2":
+                        username=input("Enter username: ")
+                        if username in lis:
+                            lis.pop(username)
+                        else:
+                            print("User doesn't Exist!")
+                    elif ch == "3":
+                        username=input("Enter username: ")
+                        if username in lis:
+                            password = get_password()
+                            f = Fernet(lis[username]["key"])
+                            token = f.encrypt(bytes(password, encoding='utf-8'))
+                            lis[username]["token"] = token
+                        else:
+                            print("User doesn't Exist!")
+                    elif ch == "4":
+                        logged_in_user = None
+                        with open(os.path.join(os.getcwd(), "main.py"), 'r') as f:
+                            l = f.readlines()
+                        l[0] = 'logged_in_user = None\n'
+                        with open(os.path.join(os.getcwd(), "main.py"), 'w') as f:
+                            f.writelines(l)
+                    else:
+                        break
             elif lis[logged_in_user]["designation"] == "User":
                 x=""
                 for i in user_menu:
