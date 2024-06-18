@@ -1,0 +1,338 @@
+Consider the table:
+
+CREATE TABLE empl(emplno int not null primary key, ename varchar(10), job varchar(9), mgr int, hiredate date, sal int, comm int, deptno int);
+INSERT INTO empl VALUES
+(7369, 'SMITH', 'CLERK', 7902, '1980-12-17', 800, NULL, 20),
+(7499, 'ALLEN', 'SALESMAN', 7698, '1981-02-20', 1600, 300, 30),
+(7521, 'WARD', 'SALESMAN', 7698, '1981-02-22', 1250, 500, 30),
+(7566, 'JONES', 'MANAGER', 7839, '1981-04-02', 2975, NULL, 20),
+(7654, 'MARTIN', 'SALESMAN', 7698, '1981-09-28', 1250, 1400, 30),
+(7698, 'BLAKE', 'MANAGER', 7839, '1981-05-01', 2850, NULL, 30),
+(7782, 'CLARK', 'MANAGER', 7839, '1981-06-09', 2450, NULL, 10),
+(7788, 'SCOTT', 'ANALYST', 7566, '1987-04-19', 3000, NULL, 20),
+(7839, 'KING', 'PRESIDENT', NULL, '1981-11-17', 5000, NULL, 10),
+(7844, 'TURNER', 'SALESMAN', 7698, '1981-09-08', 1500, 0, 30),
+(7876, 'ADAMS', 'CLERK', 7788, '1987-05-23',1100, NULL, 20),
+(7900, 'JAMES', 'CLERK', 7698, '1981-12-03', 950, NULL, 30),
+(7902, 'FORD', 'ANALYST', 7566, '1981-12-03',3000, NULL, 20),
+(7934, 'MILLER', 'CLERK', 7782, '1982-01-23',1300, NULL, 10);
+
+16. Write the command to display the names of all Managers.
+SELECT ename FROM empl WHERE job = 'MANAGER';
++-------+
+| ename |
++-------+
+| JONES |
+| BLAKE |
+| CLARK |
++-------+
+
+17. Write the command to display the no. and name of those employees who were hired in the year 1981.
+SELECT emplno, ename FROM empl WHERE YEAR(hiredate) = 1981;
++--------+--------+
+| emplno | ename  |
++--------+--------+
+|   7499 | ALLEN  |
+|   7521 | WARD   |
+|   7566 | JONES  |
+|   7654 | MARTIN |
+|   7698 | BLAKE  |
+|   7782 | CLARK  |
+|   7839 | KING   |
+|   7844 | TURNER |
+|   7900 | JAMES  |
+|   7902 | FORD   |
++--------+--------+
+
+18. Write the command to display the name and annual salary of all employees.
+SELECT ename, (sal * 12) AS annual_salary FROM empl;
++--------+---------------+
+| ename  | annual_salary |
++--------+---------------+
+| SMITH  |          9600 |
+| ALLEN  |         19200 |
+| WARD   |         15000 |
+| JONES  |         35700 |
+| MARTIN |         15000 |
+| BLAKE  |         34200 |
+| CLARK  |         29400 |
+| SCOTT  |         36000 |
+| KING   |         60000 |
+| TURNER |         18000 |
+| ADAMS  |         13200 |
+| JAMES  |         11400 |
+| FORD   |         36000 |
+| MILLER |         15600 |
++--------+---------------+
+
+19. Write the command to display the name and job of employees working in department 20 and earning more than 1000.
+SELECT ename, job FROM empl WHERE deptno = 20 AND sal > 1000;
++-------+---------+
+| ename | job     |
++-------+---------+
+| JONES | MANAGER |
+| SCOTT | ANALYST |
+| ADAMS | CLERK   |
+| FORD  | ANALYST |
++-------+---------+
+
+20. Write the command to display the no., name and salary of employees whose salary is not between 1000 and 2000.
+SELECT emplno, ename, sal FROM empl WHERE sal NOT BETWEEN 1000 AND 2000;
++--------+-------+------+
+| emplno | ename | sal  |
++--------+-------+------+
+|   7369 | SMITH |  800 |
+|   7566 | JONES | 2975 |
+|   7698 | BLAKE | 2850 |
+|   7782 | CLARK | 2450 |
+|   7788 | SCOTT | 3000 |
+|   7839 | KING  | 5000 |
+|   7900 | JAMES |  950 |
+|   7902 | FORD  | 3000 |
++--------+-------+------+
+
+21. Write the command to display the names of employees working in departments 10 and 20.
+SELECT ename FROM empl WHERE deptno IN (10, 20);
++--------+
+| ename  |
++--------+
+| SMITH  |
+| JONES  |
+| CLARK  |
+| SCOTT  |
+| KING   |
+| ADAMS  |
+| FORD   |
+| MILLER |
++--------+
+
+22. Write the command to display the names of employees whose name has the second alphabet 'A'.
+SELECT ename FROM empl WHERE ename LIKE '_A%';
++--------+
+| ename  |
++--------+
+| WARD   |
+| MARTIN |
+| JAMES  |
++--------+
+
+23. Write the command to display the name and job of those employees whose job does not contain the alphabet 'A'.
+SELECT ename, job FROM empl WHERE job NOT LIKE '%A%';
++--------+-----------+
+| ename  | job       |
++--------+-----------+
+| SMITH  | CLERK     |
+| KING   | PRESIDENT |
+| ADAMS  | CLERK     |
+| JAMES  | CLERK     |
+| MILLER | CLERK     |
++--------+-----------+
+
+24. Write the command to display the job which has some commission.
+SELECT DISTINCT job FROM empl WHERE comm IS NOT NULL;
++----------+
+| job      |
++----------+
+| SALESMAN |
++----------+
+
+25. Write the command to display the names of all salesmen in alphabetical order.
+SELECT ename FROM empl WHERE job = 'SALESMAN' ORDER BY ename;
++--------+
+| ename  |
++--------+
+| ALLEN  |
+| MARTIN |
+| TURNER |
+| WARD   |
++--------+
+
+26. Write the command to display the name, job and salary of employees working in department 10, in descending order of salary.
+SELECT ename, job, sal FROM empl WHERE deptno = 10 ORDER BY sal DESC;
++--------+-----------+------+
+| ename  | job       | sal  |
++--------+-----------+------+
+| KING   | PRESIDENT | 5000 |
+| CLARK  | MANAGER   | 2450 |
+| MILLER | CLERK     | 1300 |
++--------+-----------+------+
+
+27. Write the command to display the latest and oldest date of hiring among all the employees.
+SELECT MIN(hiredate) AS oldest_hiredate, MAX(hiredate) AS latest_hiredate FROM empl;
++-----------------+-----------------+
+| oldest_hiredate | latest_hiredate |
++-----------------+-----------------+
+| 1980-12-17      | 1987-05-23      |
++-----------------+-----------------+
+
+28. Write the command to display the number of employees who have a manager.
+SELECT COUNT(*) FROM empl WHERE mgr IS NOT NULL;
++----------+
+| COUNT(*) |
++----------+
+|       13 |
++----------+
+
+29. Write the command to display the total salary of the employees working in department 20.
+SELECT SUM(sal) AS total_salary FROM empl WHERE deptno = 20;
++--------------+
+| total_salary |
++--------------+
+|        10875 |
++--------------+
+
+30. Write the command to display the average salary for each department.
+SELECT deptno, AVG(sal) AS avg_salary FROM empl GROUP BY deptno;
++--------+------------+
+| deptno | avg_salary |
++--------+------------+
+|     20 |  2175.0000 |
+|     30 |  1566.6667 |
+|     10 |  2916.6667 |
++--------+------------+
+{{OR}}
+SELECT deptno, AVG(sal) AS avg_salary FROM empl GROUP BY deptno ORDER BY avg_salary;
++--------+------------+
+| deptno | avg_salary |
++--------+------------+
+|     30 |  1566.6667 |
+|     20 |  2175.0000 |
+|     10 |  2916.6667 |
++--------+------------+
+
+
+31. Write the command to display the department-wise count of employees.
+SELECT deptno, COUNT(*) AS employee_count FROM empl GROUP BY deptno;
++--------+----------------+
+| deptno | employee_count |
++--------+----------------+
+|     20 |              5 |
+|     30 |              6 |
+|     10 |              3 |
++--------+----------------+
+
+32. Write the command to display the maximum and minimum salary for each job.
+SELECT job, MAX(sal) AS max_salary, MIN(sal) AS min_salary FROM empl GROUP BY job;
++-----------+------------+------------+
+| job       | max_salary | min_salary |
++-----------+------------+------------+
+| CLERK     |       1300 |        800 |
+| SALESMAN  |       1600 |       1250 |
+| MANAGER   |       2975 |       2450 |
+| ANALYST   |       3000 |       3000 |
+| PRESIDENT |       5000 |       5000 |
++-----------+------------+------------+
+
+33. Write the command to display the average salary of those departments whose average salary is more than 500.
+SELECT deptno, AVG(sal) AS avg_salary FROM empl GROUP BY deptno HAVING AVG(sal) > 500;
++--------+------------+
+| deptno | avg_salary |
++--------+------------+
+|     20 |  2175.0000 |
+|     30 |  1566.6667 |
+|     10 |  2916.6667 |
++--------+------------+
+{{OR}}
+SELECT deptno, avg_salary FROM ( SELECT deptno, AVG(sal) AS avg_salary FROM empl GROUP BY deptno ) AS dept_avg WHERE avg_salary > 500;
++--------+------------+
+| deptno | avg_salary |
++--------+------------+
+|     20 |  2175.0000 |
+|     30 |  1566.6667 |
+|     10 |  2916.6667 |
++--------+------------+
+
+
+34.Write the command to display the department no. and no. of employees in those departments where the number of employees is less than 5.
+SELECT deptno, COUNT(*) AS employee_count FROM empl GROUP BY deptno HAVING COUNT(*) < 5;
++--------+----------------+
+| deptno | employee_count |
++--------+----------------+
+|     10 |              3 |
++--------+----------------+
+{{OR}}
+SELECT deptno, employee_count FROM ( SELECT deptno, COUNT(*) AS employee_count FROM empl GROUP BY deptno ) AS dept_countWHERE employee_count < 5;
++--------+----------------+
+| deptno | employee_count |
++--------+----------------+
+|     10 |              3 |
++--------+----------------+
+
+
+
+
+35. Write the output of the following SQL commands:
+
+(i) select ename, job from empl where deptno <> 20 and deptno != 30;
++--------+-----------+
+| ename  | job       |
++--------+-----------+
+| CLARK  | MANAGER   |
+| KING   | PRESIDENT |
+| MILLER | CLERK     |
++--------+-----------+
+
+
+(ii) select ename, sal from empl where sal between 800 and 1300;
++--------+------+
+| ename  | sal  |
++--------+------+
+| SMITH  |  800 |
+| WARD   | 1250 |
+| MARTIN | 1250 |
+| ADAMS  | 1100 |
+| JAMES  |  950 |
+| MILLER | 1300 |
++--------+------+
+
+
+(iii) select ename, job from empl where ename like '%E' and job like '%E_';
++-------+---------+
+| ename | job     |
++-------+---------+
+| BLAKE | MANAGER |
++-------+---------+
+
+(iv) select distinct job from empl where comm is null;
++-----------+
+| job       |
++-----------+
+| CLERK     |
+| MANAGER   |
+| ANALYST   |
+| PRESIDENT |
++-----------+
+
+(v) select empno, ename, job from empl where deptno=10 order by hiredate;
++--------+--------+-----------+
+| emplno | ename  | job       |
++--------+--------+-----------+
+|   7782 | CLARK  | MANAGER   |
+|   7839 | KING   | PRESIDENT |
+|   7934 | MILLER | CLERK     |
++--------+--------+-----------+
+
+(vi) select min(ename), max(ename) from empl;
++------------+------------+
+| min(ename) | max(ename) |
++------------+------------+
+| ADAMS      | WARD       |
++------------+------------+
+
+(vii) select count(*) as "No. of Emp not receiving Comm" from empl where comm is null;
++-------------------------------+
+| No. of Emp not receiving Comm |
++-------------------------------+
+|                            10 |
++-------------------------------+
+
+(viii) select deptno, max(sal), min(sal) from empl where deptno=20 or deptno=30 group by deptno;
++--------+----------+----------+
+| deptno | max(sal) | min(sal) |
++--------+----------+----------+
+|     20 |     3000 |      800 |
+|     30 |     2850 |      950 |
++--------+----------+----------+
+
+(ix) select deptno, max(sal), min(sal) from empl group by deptno having max(sal) < 3000 and min(sal) > 1000;
+Empty set
